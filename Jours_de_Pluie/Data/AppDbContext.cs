@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Jours_de_Pluie.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jours_de_Pluie.Data
 {
@@ -6,7 +7,32 @@ namespace Jours_de_Pluie.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            //commit here
+            
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            modelBuilder.Entity<ActorMovie>().HasKey(am => new
+            {
+                am.ActorId,
+                am.MovieId
+            });
+
+            modelBuilder.Entity<ActorMovie>().HasOne(m => m.Movie).WithMany(am => am.Actor_Movies).HasForeignKey(m =>
+            m.MovieId);
+
+            modelBuilder.Entity<ActorMovie>().HasOne(m => m.Actor).WithMany(am => am.Actor_Movies).HasForeignKey(m =>
+            m.ActorId);
+
+            base.OnModelCreating(modelBuilder);
+        }
+        public DbSet<Actor> Actors { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<ActorMovie> Actor_Movies { get; set; }
+
+        public DbSet<Cinema> Cinemas { get; set; }
+
+        public DbSet<Producer> Producers { get; set; }
+
     }
 }

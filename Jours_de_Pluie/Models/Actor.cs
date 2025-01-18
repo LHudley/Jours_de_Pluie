@@ -12,5 +12,7 @@ namespace Jours_de_Pluie.Models
         public string FullName { get; set; }
         
         public string Biography { get; set; }
+
+        public List<ActorMovie> Actor_Movies { get; set; }
     }
 }
